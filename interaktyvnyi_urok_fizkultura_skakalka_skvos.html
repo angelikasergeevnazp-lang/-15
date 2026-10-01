@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Фізична культура — інтерактивний урок</title>
+<style>
+:root{
+  --bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#667085;
+  --accent:#315bea;--accent2:#18a673;--warn:#f59e0b;--danger:#e5484d;
+  --shadow:0 10px 30px rgba(20,35,70,.10);--radius:24px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eef4ff,#f7fbf8);color:var(--ink)}
+header{padding:28px 18px;text-align:center;background:linear-gradient(135deg,#315bea,#6c4ce8);color:white}
+header h1{margin:0 0 8px;font-size:clamp(25px,5vw,44px)}
+header p{margin:0;font-size:18px;opacity:.94}
+.wrap{max-width:1100px;margin:auto;padding:22px}
+.progress{position:sticky;top:0;z-index:10;background:#ffffffee;backdrop-filter:blur(8px);padding:10px 18px;box-shadow:0 3px 14px #0001}
+.progressbar{height:10px;background:#e7ebf3;border-radius:20px;overflow:hidden}.progressbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#315bea,#18a673);transition:.4s}
+.section{display:none;animation:fade .35s ease}.section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);padding:25px;margin:18px 0;box-shadow:var(--shadow)}
+h2{font-size:28px;margin-top:0} h3{font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.tile{padding:20px;border-radius:20px;background:#f7f9fc;border:1px solid #e7ebf3}
+.icon{font-size:40px}
+.badge{display:inline-block;padding:7px 12px;border-radius:999px;background:#eaf0ff;color:#2446b7;font-weight:bold;margin:3px}
+button{border:0;border-radius:14px;padding:12px 18px;font-size:16px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;transition:.2s}
+button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+button.secondary{background:#e9edf5;color:#27334d}
+button.green{background:var(--accent2)}
+button.warn{background:var(--warn)}
+.nav{display:flex;justify-content:space-between;gap:10px;margin:22px 0}
+.list{line-height:1.65}.safe{border-left:6px solid var(--danger)}.tip{border-left:6px solid var(--accent2)}
+.exercise{cursor:pointer;user-select:none}.exercise.done{background:#eafaf3;border-color:#8bd9b8}
+.exercise.done h3:after{content:" ✓";color:var(--accent2)}
+.timer{text-align:center;font-size:52px;font-weight:800;letter-spacing:2px;margin:10px}
+.quiz-q{font-size:19px;font-weight:700;margin-bottom:12px}
+.option{display:block;width:100%;margin:8px 0;text-align:left;background:#f1f4f9;color:#18233b}
+.option.correct{background:#d9f7e9;color:#09683f}.option.wrong{background:#ffe1e2;color:#9f1c22}
+.feedback{min-height:28px;font-weight:700;margin-top:10px}
+.score{font-size:22px;font-weight:800}
+.choice{display:flex;flex-wrap:wrap;gap:10px}.choice button{background:#edf1f7;color:#26334c}.choice button.selected{background:#315bea;color:#fff}
+.footer{text-align:center;color:var(--muted);padding:25px}
+.small{font-size:14px;color:var(--muted)}
+table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #e8ecf3;text-align:left}
+@media(max-width:600px){.wrap{padding:12px}.card{padding:18px}h2{font-size:24px}.nav button{flex:1}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏃‍♀️ Рухайся, стрибай, грай!</h1>
+  <p>Інтерактивний урок фізичної культури</p>
+  <p><b>ІБЖ • ЗРВ • Л/А: стрибки через довгу скакалку • Сквош</b></p>
+</header>
+
+<div class="progress"><div class="progressbar"><span id="bar"></span></div></div>
+
+<main class="wrap">
+
+<section class="section active" id="s1">
+<div class="card">
+<h2>🎯 Сьогодні на уроці</h2>
+<div class="grid">
+<div class="tile"><div class="icon">🛡️</div><h3>ІБЖ</h3><p>Безпечно працюємо з інвентарем і дотримуємося дистанції.</p></div>
+<div class="tile"><div class="icon">🔥</div><h3>ЗРВ</h3><p>Готуємо м'язи та суглоби до активної роботи.</p></div>
+<div class="tile"><div class="icon">🪢</div><h3>Довга скакалка</h3><p>Розвиваємо ритм, координацію, спритність і витривалість.</p></div>
+<div class="tile"><div class="icon">🎾</div><h3>Сквош</h3><p>Вчимося виконувати удари на місці та в русі.</p></div>
+</div>
+<div class="card tip"><b>🏆 Мета уроку:</b> правильно й безпечно виконувати вправи, контролювати свої рухи, працювати в парах і командах.</div>
+</div>
+<div class="nav"><span></span><button onclick="next()">Почати урок →</button></div>
+</section>
+
+<section class="section" id="s2">
+<div class="card safe">
+<h2>🛡️ ІБЖ — правила безпеки</h2>
+<div class="grid">
+<div class="tile"><b>1. Дистанція</b><p>Не підходь близько до того, хто працює зі скакалкою або ракеткою.</p></div>
+<div class="tile"><b>2. Скакалка</b><p>Не розкручуй її поруч з іншими учнями. Перед початком переконайся, що простір вільний.</p></div>
+<div class="tile"><b>3. Сквош</b><p>Не виходь у зону удару партнера. Ракетку тримай контрольовано.</p></div>
+<div class="tile"><b>4. Сигнал учителя</b><p>За командою «Стоп!» одразу припиняй вправу та поклади інвентар.</p></div>
+</div>
+</div>
+<div class="card">
+<h3>🧠 Міні-перевірка</h3>
+<p class="quiz-q">Що потрібно зробити перед стрибками через довгу скакалку?</p>
+<button class="option" onclick="checkOne(this,false)">Одразу почати стрибати</button>
+<button class="option" onclick="checkOne(this,true)">Перевірити вільний простір і дотриматися дистанції</button>
+<button class="option" onclick="checkOne(this,false)">Стати якомога ближче до інших</button>
+<div class="feedback" id="f1"></div>
+</div>
+<div class="nav"><button class="secondary" onclick="prev()">← Назад</button><button onclick="next()">Далі →</button></div>
+</section>
+
+<section class="section" id="s3">
+<div class="card">
+<h2>🔥 ЗРВ — розминка</h2>
+<p>Виконуй вправи плавно. Не затримуй дихання. Обирай темп відповідно до свого самопочуття.</p>
+<div class="grid">
+<div class="tile exercise" onclick="done(this)"><h3>1. Ходьба на місці</h3><p>30 секунд. Руки працюють вільно.</p></div>
+<div class="tile exercise" onclick="done(this)"><h3>2. Колові рухи плечима</h3><p>8–10 разів уперед і назад.</p></div>
+<div class="tile exercise" onclick="done(this)"><h3>3. Нахили тулуба</h3><p>6–8 разів у кожен бік.</p></div>
+<div class="tile exercise" onclick="done(this)"><h3>4. Напівприсідання</h3><p>8–10 разів, спина рівна.</p></div>
+<div class="tile exercise" onclick="done(this)"><h3>5. Легкі підскоки</h3><p>20–30 секунд на носках.</p></div>
+<div class="tile exercise" onclick="done(this)"><h3>6. Рухи стопами</h3><p>По 8–10 разів кожною ногою.</p></div>
+</div>
+<p class="small">💡 Натискай на виконану вправу — вона позначиться галочкою.</p>
+</div>
+<div class="nav"><button class="secondary" onclick="prev()">← Назад</button><button onclick="next()">Далі →</button></div>
+</section>
+
+<section class="section" id="s4">
+<div class="card">
+<h2>🪢 Л/А — стрибки через довгу скакалку</h2>
+<p><b>Довга скакалка</b> — вправа, під час якої один або кілька учасників перестрибують через скакалку, яку обертають партнери.</p>
+<div class="grid">
+<div class="tile"><div class="icon">👀</div><h3>Підготуйся</h3><p>Стань перед скакалкою, дивись на її рух і чекай зручного моменту.</p></div>
+<div class="tile"><div class="icon">🦘</div><h3>Стрибай</h3><p>Підстрибуй невисоко, м'яко приземляйся на носки.</p></div>
+<div class="tile"><div class="icon">🎵</div><h3>Тримай ритм</h3><p>Стрибок має відповідати швидкості обертання скакалки.</p></div>
+<div class="tile"><div class="icon">🤝</div><h3>Працюй командою</h3><p>Ті, хто обертає скакалку, узгоджують швидкість і напрям.</p></div>
+</div>
+<div class="card tip"><b>Запам'ятай:</b> краще зробити невисокий контрольований стрибок, ніж намагатися перестрибнути скакалку надто високо.</div>
+</div>
+<div class="nav"><button class="secondary" onclick="prev()">← Назад</button><button onclick="next()">Далі →</button></div>
+</section>
+
+<section class="section" id="s5">
+<div class="card">
+<h2>🎾 Сквош — удари по м'ячу</h2>
+<p>Сьогодні тренуємо удари <b>на місці та в русі</b>, від стіни, у парах, колонах і зустрічних колонах.</p>
+<table>
+<tr><th>Варіант</th><th>Що робимо?</th></tr>
+<tr><td>На місці</td><td>Зберігаємо стійку, контролюємо ракетку та напрям м'яча.</td></tr>
+<tr><td>У русі</td><td>Переміщуємося до м'яча, займаємо зручне положення та виконуємо удар.</td></tr>
+<tr><td>Від стіни</td><td>Після удару стежимо за відскоком і готуємося до наступного.</td></tr>
+<tr><td>У парах</td><td>Партнери по черзі виконують удари, дотримуючись дистанції.</td></tr>
+<tr><td>У колонах</td><td>Учні виконують вправу по черзі та повертаються в кінець колони.</td></tr>
+<tr><td>У зустрічних колонах</td><td>Після виконання вправи переміщуються до протилежної колони.</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>🎯 Алгоритм удару</h3>
+<div class="grid">
+<div class="tile"><b>1️⃣ Побач м'яч</b><p>Слідкуй за напрямком його польоту.</p></div>
+<div class="tile"><b>2️⃣ Перемістися</b><p>Займи зручне місце для удару.</p></div>
+<div class="tile"><b>3️⃣ Підготуй ракетку</b><p>Тримай її контрольовано.</p></div>
+<div class="tile"><b>4️⃣ Виконай удар</b><p>Не бий надмірно сильно.</p></div>
+<div class="tile"><b>5️⃣ Повернися</b><p>Будь готовий до наступного руху.</p></div>
+</div>
+</div>
+<div class="nav"><button class="secondary" onclick="prev()">← Назад</button><button onclick="next()">Далі →</button></div>
+</section>
+
+<section class="section" id="s6">
+<div class="card">
+<h2>⏱️ Челендж «30 секунд руху»</h2>
+<p>Виконай у безпечному просторі: легкі стрибки на місці або імітація роботи зі скакалкою.</p>
+<div class="timer" id="timer">00:30</div>
+<div style="text-align:center"><button onclick="startTimer()">▶ Старт</button> <button class="secondary" onclick="resetTimer()">↺ Скинути</button></div>
+</div>
+<div class="card">
+<h3>🎮 Що обираєш?</h3>
+<p>Натисни на свій варіант.</p>
+<div class="choice" id="choice">
+<button onclick="selectChoice(this)">🪢 Скакалка</button>
+<button onclick="selectChoice(this)">🎾 Сквош</button>
+<button onclick="selectChoice(this)">🏃 Обидва</button>
+</div>
+<p id="choiceText" class="feedback"></p>
+</div>
+<div class="nav"><button class="secondary" onclick="prev()">← Назад</button><button onclick="next()">Далі →</button></div>
+</section>
+
+<section class="section" id="s7">
+<div class="card">
+<h2>🧠 Фінальна перевірка</h2>
+<div id="quiz"></div>
+<p class="score" id="score"></p>
+</div>
+<div class="nav"><button class="secondary" onclick="prev()">← Назад</button><button onclick="next()">До самооцінювання →</button></div>
+</section>
+
+<section class="section" id="s8">
+<div class="card">
+<h2>⭐ Моє самооцінювання</h2>
+<p>Обери твердження, яке найкраще описує твою роботу сьогодні.</p>
+<div class="grid">
+<div class="tile" onclick="selfRate(this,'Відмінно! Ти активно працював/працювала та дотримувався/дотримувалася правил безпеки.')"><div class="icon">🏆</div><h3>Можу впевнено</h3><p>Я правильно виконую вправи та можу пояснити техніку.</p></div>
+<div class="tile" onclick="selfRate(this,'Добре! Основні дії тобі вже зрозумілі. Ще трохи практики — і буде впевненіше.')"><div class="icon">👍</div><h3>Виходить</h3><p>Більшість вправ виконую правильно, але потребую практики.</p></div>
+<div class="tile" onclick="selfRate(this,'Це нормально. Визнач, що саме було складним, і потренуйся ще раз у безпечних умовах.')"><div class="icon">💪</div><h3>Потрібна практика</h3><p>Деякі рухи ще складні, хочу їх відпрацювати.</p></div>
+</div>
+<div id="rate" class="feedback"></div>
+</div>
+<div class="card tip">
+<h3>🏁 Урок завершено!</h3>
+<p>Ти повторив(ла) правила безпеки, виконав(ла) розминку, ознайомився(лася) зі стрибками через довгу скакалку та вправами зі сквошу.</p>
+<button class="green" onclick="restart()">🔄 Пройти ще раз</button>
+</div>
+</section>
+
+</main>
+<div class="footer">Фізична культура • Інтерактивний навчальний урок</div>
+
+<script>
+let current=0;
+const sections=[...document.querySelectorAll('.section')];
+function show(i){current=Math.max(0,Math.min(sections.length-1,i));sections.forEach((s,n)=>s.classList.toggle('active',n===current));document.getElementById('bar').style.width=((current)/(sections.length-1)*100)+'%';window.scrollTo({top:0,behavior:'smooth'})}
+function next(){show(current+1)} function prev(){show(current-1)}
+function done(el){el.classList.toggle('done')}
+function checkOne(el,good){el.classList.add(good?'correct':'wrong');document.getElementById('f1').textContent=good?'✅ Правильно! Спочатку перевіряємо простір і дистанцію.':'❌ Подумай про безпеку: спочатку потрібно перевірити простір.'}
+function selectChoice(el){document.querySelectorAll('#choice button').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');document.getElementById('choiceText').textContent='Обрано: '+el.textContent}
+function selfRate(el,msg){document.querySelectorAll('#s8 .tile').forEach(x=>x.style.outline='none');el.style.outline='3px solid #315bea';document.getElementById('rate').textContent=msg}
+let t=30,interval=null;
+function renderTimer(){document.getElementById('timer').textContent='00:'+String(t).padStart(2,'0')}
+function startTimer(){if(interval)return;interval=setInterval(()=>{t--;renderTimer();if(t<=0){clearInterval(interval);interval=null;document.getElementById('timer').textContent='ГОТОВО! 🎉'}},1000)}
+function resetTimer(){clearInterval(interval);interval=null;t=30;renderTimer()}
+const qs=[
+['Яка головна вимога під час роботи з довгою скакалкою?',['Дотримуватися дистанції та контролювати простір','Стояти якомога ближче до інших','Стрибати без команди'],0],
+['Що важливо під час удару у сквоші?',['Заплющити очі','Стежити за м’ячем і зайняти зручне положення','Вдарити якомога сильніше'],1],
+['Як краще приземлятися після стрибка?',['М’яко, з контролем руху','На прямі жорсткі ноги','На одну ногу без рівноваги'],0],
+['Що робимо після удару у сквоші?',['Завмираємо на місці','Готуємося до наступного руху','Відвертаємося від м’яча'],1]
+];
+let qi=0,score=0;
+function renderQuiz(){
+ if(qi>=qs.length){document.getElementById('quiz').innerHTML='<h3>🎉 Тест завершено!</h3>';document.getElementById('score').textContent='Результат: '+score+' із '+qs.length;return}
+ const [q,opts,ans]=qs[qi];
+ document.getElementById('quiz').innerHTML='<div class="quiz-q">'+(qi+1)+'. '+q+'</div>'+opts.map((o,i)=>`<button class="option" onclick="answer(this,${i===ans})">${o}</button>`).join('');
+}
+function answer(el,good){document.querySelectorAll('#quiz .option').forEach(b=>b.disabled=true);el.classList.add(good?'correct':'wrong');if(good)score++;setTimeout(()=>{qi++;renderQuiz()},650)}
+renderQuiz();
+function restart(){qi=0;score=0;resetTimer();document.querySelectorAll('.exercise').forEach(x=>x.classList.remove('done'));renderQuiz();show(0)}
+</script>
+</body>
+</html>
